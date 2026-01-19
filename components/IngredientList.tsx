@@ -51,21 +51,22 @@ export default function IngredientList({ ingredients, onAdd, onRemove }: Ingredi
                     </motion.div>
                 ))}
 
-                <form onSubmit={handleSubmit} className="flex-1 min-w-[150px]">
-                    <div className="relative">
+                <form onSubmit={handleSubmit} className="flex-1 min-w-[180px]">
+                    <div className="relative group">
                         <input
                             type="text"
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
                             placeholder="Add more..."
-                            className="w-full bg-zinc-900/50 border border-dashed border-zinc-700 rounded-2xl py-2 px-4 text-sm focus:outline-none focus:border-emerald-500/50 text-white placeholder:text-zinc-600"
+                            className="w-full bg-zinc-900/50 border border-dashed border-zinc-700 rounded-2xl py-3 px-4 text-sm focus:outline-none focus:border-emerald-500/50 focus:bg-zinc-900/80 text-white placeholder:text-zinc-600 transition-all"
                         />
-                        <button
+                        <motion.button
                             type="submit"
-                            className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-zinc-500 hover:text-emerald-400"
+                            whileTap={{ scale: 0.9 }}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-emerald-500/10 hover:bg-emerald-500/20 rounded-xl text-emerald-500 transition-colors"
                         >
-                            <Plus className="w-4 h-4" />
-                        </button>
+                            <Plus className="w-5 h-5" />
+                        </motion.button>
                     </div>
                 </form>
             </div>
