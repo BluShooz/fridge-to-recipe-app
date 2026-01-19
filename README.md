@@ -2,7 +2,7 @@
 
 AI-powered fridge-to-recipe mobile-first web app (PWA).
 
-**Live Demo:** [https://fridge-to-recipe-eseb3rhr6-jon-smiths-projects-a3dfc292.vercel.app](https://fridge-to-recipe-eseb3rhr6-jon-smiths-projects-a3dfc292.vercel.app)
+**Live Demo:** [https://fridge-to-recipe-p30lwbhz4-jon-smiths-projects-a3dfc292.vercel.app](https://fridge-to-recipe-p30lwbhz4-jon-smiths-projects-a3dfc292.vercel.app)
 
 ## Features
 - 📸 **Camera Access:** Snap a photo of your fridge directly in the browser.
