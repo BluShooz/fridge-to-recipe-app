@@ -12,21 +12,44 @@ export default function CameraCapture({ onCapture }: CameraCaptureProps) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [stream, setStream] = useState<MediaStream | null>(null);
     const [isStarting, setIsStarting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    // Use effect to set stream to video element once it's mounted
+    React.useEffect(() => {
+        if (stream && videoRef.current) {
+            videoRef.current.srcObject = stream;
+            videoRef.current.play().catch(e => console.error("Video play failed:", e));
+        }
+    }, [stream]);
 
     const startCamera = useCallback(async () => {
         setIsStarting(true);
+        setError(null);
         try {
-            const mediaStream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: 'environment' },
+            const constraints = {
+                video: {
+                    facingMode: 'environment',
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                },
                 audio: false,
-            });
-            setStream(mediaStream);
-            if (videoRef.current) {
-                videoRef.current.srcObject = mediaStream;
+            };
+
+            let mediaStream: MediaStream;
+            try {
+                mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+            } catch (err) {
+                console.warn('FacingMode environment failed, trying default', err);
+                // Fallback to simpler constraints
+                mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
             }
+
+            setStream(mediaStream);
         } catch (err) {
             console.error('Error accessing camera:', err);
-            alert('Camera access is required to use this app.');
+            const msg = err instanceof Error ? err.message : 'Unknown camera error';
+            setError(`Camera Error: ${msg}`);
+            alert(`Camera access failed: ${msg}. Please ensure you have granted permissions and are using HTTPS.`);
         } finally {
             setIsStarting(false);
         }
@@ -97,8 +120,14 @@ export default function CameraCapture({ onCapture }: CameraCaptureProps) {
                 ref={videoRef}
                 autoPlay
                 playsInline
+                muted
                 className="flex-1 object-cover w-full h-full"
             />
+            {error && (
+                <div className="absolute top-4 left-4 right-4 bg-rose-500/80 p-3 rounded-lg text-white text-xs z-50">
+                    {error}
+                </div>
+            )}
             <div className="absolute bottom-12 left-0 right-0 flex justify-center px-8">
                 <button
                     onClick={capturePhoto}
